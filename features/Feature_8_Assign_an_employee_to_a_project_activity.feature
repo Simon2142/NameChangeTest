@@ -7,7 +7,7 @@ Scenario: Assign employee to project activity
     And the employee is the project manager of a project "TestProject"
     And an activity with the name "TestActivity" exists in the project
     When the project manager assigns an employee to the project activity
-    The employee is assigned to the project activity
+    And The employee is assigned to the project activity
 
 Scenario: Employee is unavailable for activity
     Given an employee is logged in
