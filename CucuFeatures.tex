@@ -1,0 +1,281 @@
+
+%All 10 features we chose:
+%1. Login to the system.
+%2. Create a new project with a name and an ID. 
+%3. Create a non-project activity and give it a starting date and expected duration.
+%4. Register time spent working on an activity on a given day, even if I haven't been specifically assigned to that activity.
+%5. Set myself as project manager - for a project that doesn't have a manager - and set starting week, duration and expected workload.
+%6. Edit the project.
+%7. Create an activity in said project with starting date, duration and expected workload.
+%8. Assign an employee to an activity in said project.
+%9. View the employees who are available to be assigned during the time designated for an activity.
+%10. Create a detailed report of my project, which showcases relevant metrics for evaluation.
+
+
+\subsubsection{Feature 1: Login to the system} %Emil 1
+%1. Login to the system. DONE
+\begin{lstlisting} 
+Feature: Login to the system #Emil 1
+    Description: Login into the system
+    Actor: Employee
+
+Scenario: Employee logs in
+    Given that no-one is logged in
+    And an employee with an ID exists
+    When an employee logs in with their ID
+    Then the employee is logged into the system
+
+Scenario: Employee does not exists
+    Given that no-one is logged in
+    And an employee has an ID that is not registered in the system
+    When an employee logs in with the ID
+    Then the employee is not logged into the system, and an error message "Employee ID does not exist" appears
+\end{lstlisting}
+
+\subsubsection{Feature 2: Create a new project}%Max 1
+%2. Create a new project with a name and an ID. DONE
+\begin{lstlisting}
+Feature: Create a new project # Max 1
+    Description: Create a new project with a name and generated ID
+    Actor: Employee
+
+Scenario: New project is created
+    Given an employee is logged in
+    And the current date is in the year 2024
+    When the employee creates a new project with the name "TestProject"
+    Then a project with the name "TestProject" and ID "24XYZ" is created, where XYZ is the number of the project
+
+Scenario: Project name already exists
+    Given an employee is logged in
+    And the current date is in the year 2024
+    And a project with the name "TestProject" exists
+    When the employee creates a new project with the name "TestProject"
+    Then the project is not created, and an error message "Project already exists" appears
+\end{lstlisting}
+
+\subsubsection{Feature 3: Create non-project activity} %Charlotte 1
+%3. Create a non-project activity and give it a starting date and expected duration. DONE
+\begin{lstlisting}
+Feature: Create non-project activity # Seb 2
+    Description: Creating a non-project activity
+    Actor: Employee
+
+Scenario: Create a non-project activity
+    Given an employee is logged in
+    And there is an activity with the name "Vacation" 
+    And the activity starts on a given day with a duration of "14" days
+    When the employee creates the non-project activity
+    Then the non-project activity is created
+
+Scenario: Create a non-project activity that already exists
+    Given an employee is logged in
+    And there is an activity with the name "Vacation"
+    When the employee creates a non-project activity with the name "Vacation"
+    Then the error message "Non-project activity already exists" appears
+\end{lstlisting}
+
+\subsubsection{Feature 4: Register time spent on activity} 
+%4. Register time spent working on an activity on a given day, even if I havent been specifically assigned to that activity. DONE
+\begin{lstlisting}
+Feature: Register time spent on activity  # Simon 1
+    Description: Register the time spent on an activity on the given day
+    Actor: Employee
+
+Scenario: Register time for a project activity
+    Given the employee is logged in
+    And it is the current date
+    And an activity with the name "TestActivity" exists in project "TestProject"
+    When the employee registers "9" half-hours spent on the activity
+    Then the time spent by the employee is registered to the activity and the employee
+
+Scenario: Register time for non-project activity
+    Given the employee is logged in
+    And there is an activity with the name "Vacation" 
+    When the employee employee registers "5" days spent on the non-project activity
+    Then the time spent by the employee is registered to the non-project activity and the employee
+
+Scenario: Edit project activity time registration
+    Given the employee is logged in
+    And an activity with the name "TestActivity" exists in project "TestProject"
+    And the employee has previously registered time on this activity
+    When the employee edits the time spent on the activity for this registration
+    Then the time registration ticket is updated for the employee and the activity
+
+Scenario: Edit time for non-project activity
+    Given the employee is logged in
+    And there is an activity with the name "Vacation"
+    When the employee edits the duration in days spent on the non-project activity
+    Then the time spent by the employee is registered to the non-project activity and the employee
+\end{lstlisting}
+
+
+\subsubsection{Feature 5: Set project manager for a project}%Max 2
+%5. Set myself as project manager - for a project that doesn't have a manager DONE
+\begin{lstlisting}
+Feature: Set project manager for a project # Max 2
+    Description: An employee assigns themselves as project manager for an unassigned project
+    Actor: Employee / Project manager
+
+Scenario: Self-assign as project manager
+    Given an employee is logged in
+    And a project with the name "TestProject" exists
+    When the employee self-assigns themselves as project manager of the project
+    Then they become the project manager of the project
+    
+Scenario: Project manager is already assigned
+    Given an employee is logged in
+    And a project with the name "TestProject" exists
+    And the project has an existing project manager
+    When the employee self-assigns themselves as project manager of the project
+    Then they do not become the project manager, and an error message "Project already has an assigned project manager" appears
+\end{lstlisting}
+
+\subsubsection{Feature 6: Edit project}
+%6. Edit the project DONE
+\begin{lstlisting}
+Feature: Edit project # Simon 2
+    Description: Set and edit the parameters of a project
+    Actor: Project manager
+
+Scenario: Set project parameters
+    Given an employee is logged in
+    And he is the project manager of a project "TestProject"
+    When the project manager sets the starting week as "5", the duration as "3" weeks, the year as "2024", and expected workload as "200" hours
+    Then the project has these parameters set
+
+Scenario: Change project parameters
+    Given an employee is logged in
+    And he is the project manager of a project "TestProject"
+    And the project has a set starting week, duration and expected workload
+    When the project manager updates the parameters
+    Then the project parameters are changed
+
+Scenario: Change name of project
+    Given an employee is logged in
+    And he is the project manager of a project "TestProject"
+    When he changes the name of the project to "TestProject2"
+    Then the name of the project is changed to "TestProject2"
+
+Scenario: Change project name but already exists
+    Given an employee is logged in
+    And he is the project manager of a project "TestProject"
+    And another project exists with the name "TestProject2"
+    When the project manager changes the name to "TestProject2"
+    Then the project name is not changed and an error message "This project name already exists as a separate project" appears
+\end{lstlisting}
+
+\subsubsection{Feature 7: Create project activity} %Charlotte 2
+%7. Create an activity in said project with starting date, duration and expected workload DONE
+\begin{lstlisting}
+Feature: Create project activity # Seb 1
+    Description: Creating an activty and setting the parameters
+    Actor: Project manager
+
+Scenario: Create a project activity
+    Given the employee is logged in
+    And he is the project manager of a project "TestProject"
+    When he creates a project activity "TestActivity" in the project
+    Then the project activity is created
+
+Scenario: Change project activity name but already exists
+    Given an employee is logged in
+    And the employee is the project manager of a project "TestProject"
+    And an activity with the name "TestActivity" exists in the project
+    When the employee creates an activity in the project with the name "TestActivity"
+    Then the project activity is not created, and an error message "This project activity name already exists as a activity" appears
+ \end{lstlisting}   
+
+\subsubsection{Feature 8: Assign an employee to a project activity}
+%8. Assign an employee to an activity in said project. DONE
+\begin{lstlisting}
+Feature: Assign an employee to a project activity # Emil 2
+    Description: The act of assigning an employee to a project activity
+    Actor: project manager
+
+Scenario: Assign employee to project activity
+    Given an employee is logged in
+    And the employee is the project manager of a project "TestProject"
+    And an activity with the name "TestActivity" exists in the project
+    When the project manager assigns an employee to the project activity
+    The employee is assigned to the project activity
+
+Scenario: Employee is unavailable for activity
+    Given an employee is logged in
+    And the employee is the project manager of a project "TestProject"
+    And an activity with the name "TestActivity" exists in the project
+    And another employee exists, who cannot take on more activities currently
+    When the project manager assigns an employee to the project activity
+    Then the employee is not assigned to the project activity
+    And an error message "Employee cannot currently take on more activities" appears
+
+Scenario: project does not exist
+
+Scenario: Activity does not exist
+    Given an employee is logged in
+    And the employee is the project manager of a project "TestProject"
+    And no activity with the name "TestActivity" exists in the project
+    When the project manager tries to assign an employee to the activity
+    Then an error message "Activity does not exist in the given project"
+
+Scenario: Employee is already assigned to the activity
+    Given an employee is logged in
+    And the employee is the project manager of a project "TestProject" 
+    And an activity with the name "TestActivity" exists in the project
+    And another employee is already assigned to the activity
+    When the project manager assigns the other employee to "TestActivity"
+    Then the other employee is still assigned to "TestActivity" and an error message "This employee is already assigned to this activity" appears
+
+Scenario: Not project manager for given project
+    Given an employee is logged in
+    And the employee is not the project manager of a project "TestProject" 
+    And an activity with the name "TestActivity" exists in the project
+    When the project manager assigns the an employee to "TestActivity"
+    Then an error message "You are not the project manager for this project" appears
+\end{lstlisting}
+
+
+\subsubsection{Feature 9: Check available employees} %Seb 1
+%9. View the employees who are available to be assigned during the time designated for an activity. DONE
+\begin{lstlisting}
+Feature: Check available employees # Charlotte 2 -> Seb 4
+    Description: The act of checking the employees schedule for a specific project
+    Actor: Project manager
+
+Scenario: Check available employees for activity
+    Given an employee is logged in
+    And the employee is the project manager of a project "TestProject"
+    And an activity with the name "TestActivity" exists in the project
+    And there are employees available during the activity duration
+    When the project manager selects the activity and checks for available employees
+    Then a list of employees who can take on more activites during the activity duration is returned
+
+Scenario: No employees are available
+    Given an employee is logged in
+    And the employee is the project manager of a project "TestProject"
+    And an activity with the name "TestActivity" exists in the project
+    When the project manager selects the activity and checks for available employees
+    Then an empty list of employees who can take on more activites during the activity duration is returned and a message "No employees are available during this activity duration" appears
+\end{lstlisting}
+
+
+\subsubsection{Feature 10: Create project report} %Seb 2
+%10. Create a detailed report of my project, which showcases relevant metrics for evaluation. DONE
+\begin{lstlisting}
+Feature: Create project report # Seb 3
+    Description: The act of getting a project report
+    Actor: Project Manager
+
+Scenario: Get project report
+    Given an employee is logged in
+    And the employee is the project manager of a project "TestProject"
+    When the project manager requests a project report for the project
+    Then the project report is returned
+
+Scenario: An employee, who isn't the project manager of the project, wants to generate report
+    Given an employee is logged in
+    And a project with the name "TestProject" exists
+    When the employee requests a project report for the project
+    Then the report is not shown, and an error message "Only the project manager can generate reports" appears
+\end{lstlisting}
+
+
