@@ -1,8 +1,10 @@
 package dtu.projectManagementSystem.app;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SoftwareHuset {
+
 
     private static boolean isLoggedIn = false;
 
@@ -14,10 +16,10 @@ public class SoftwareHuset {
 
     public static boolean isLoggedIn(){return isLoggedIn;}
 
-    public static List<String> employees;
+    public static List<String> employees = new ArrayList<String>();
 
     public SoftwareHuset(){
-
+        System.out.println("d");
     }
 
 

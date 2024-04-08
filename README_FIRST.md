@@ -23,7 +23,7 @@ Make sure that the main class is correctly set in the pom.xml file in the JavaFX
 
 To run the main class execute: `mvn javafx:run`. 
 
-You can also run the JavaFX application from Eclipse and IntelliJ, if you have a correctly setup `module-info.java` file in the `src/main/java` directory. Note that you have to change `opens dtu.example.ui to javafx.fxml;` to the package where you have your `.fxml` files, and `exports dtu.example.ui;` to the package, that contains your start class.
+You can also run the JavaFX application from Eclipse and IntelliJ, if you have a correctly setup `module-info.java` file in the `src/main/java` directory. Note that you have to change `opens dtu.cucumbertests.ui to javafx.fxml;` to the package where you have your `.fxml` files, and `exports dtu.cucumbertests.ui;` to the package, that contains your start class.
 
 More information can be found at [https://openjfx.io/openjfx-docs/](https://openjfx.io/openjfx-docs/).
 
@@ -31,5 +31,5 @@ More information can be found at [https://openjfx.io/openjfx-docs/](https://open
 If you don't need JavaFX, you can remove the javafx entries from the pom.xml file.
 
 # Misc
-- Be sure to remove unnecessary tests, packages, classes, etc. from the example project in your final project. 
+- Be sure to remove unnecessary tests, packages, classes, etc. from the cucumbertests project in your final project. 
 - Remember to create a `README.txt` (plain text) or a `README.md` (using Markdown) file that explains how to build and run the tests and the application and any necessary information to use the information, e.g., a short user manual and a description of any preset logins with password, if required.
